@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../songInfoFrontend"
+		},
+		{
+			"name": "React-Dashboard",
+			"path": "../../../songInfoFrontend/React-Dashboard"
+		}
+	]
+}
