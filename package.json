@@ -1,7 +1,7 @@
 {
   "name": "myplaylist",
   "version": "1.0.0",
-  "description": "",
+  "description": "My app",
   "engines": {
     "node": "14.17.3"
   },
