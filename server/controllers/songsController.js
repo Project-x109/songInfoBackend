@@ -142,6 +142,7 @@ exports.getSongsCountByGenre = asyncErrorHandler(async (req, res) => {
 });
 exports.getStatistics = async (req, res) => {
     try {
+        const songCount = await Song.distinct("title").countDocuments();
         const artistCount = await Song.aggregate([
             { $group: { _id: "$artist" } },
             { $group: { _id: null, count: { $sum: 1 } } }
@@ -162,7 +163,8 @@ exports.getStatistics = async (req, res) => {
             data: {
                 artistCount,
                 albumCount,
-                genreCount
+                genreCount,
+                songCount
             }
         });
     } catch (err) {
