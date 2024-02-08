@@ -5,7 +5,7 @@ const app = express();
 const errorHandler = require("./middlewares/errorhandling.js");
 const { logMiddleware } = require("./middlewares/logMiddleware.js");
 const songs = require("./routes/songsRoute");
-const allowedOrigin = 'https://example.com';
+const allowedOrigin = 'https://songlistbackend.onrender.com';
 const corsOptions = {
     origin: allowedOrigin,
     origin: true,
