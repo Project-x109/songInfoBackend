@@ -21,6 +21,26 @@ exports.addNewSong = asyncErrorHandler(async (req, res) => {
         res.status(500).json({ success: false, error: error });
     }
 })
+exports.addNewBatchSongs = asyncErrorHandler(async (req, res) => {
+    const songsToAdd = req.body;
+    const errors = [];
+    const addedSongs = [];
+
+    try {
+        // Loop through each song in the array and add it to the database
+        for (const songData of songsToAdd) {
+            const { title, artist, album, genre } = songData;
+            const newSong = new Song({ title, artist, album, genre });
+            await newSong.save();
+            addedSongs.push(newSong);
+        }
+
+        res.status(201).json({ success: true, message: `${addedSongs.length} songs added successfully`, songs: addedSongs });
+    } catch (err) {
+        errors.push("Internal Server Error");
+        res.status(500).json({ success: false, errors });
+    }
+});
 
 exports.getAllSongs = asyncErrorHandler(async (req, res) => {
     const error = []
@@ -61,19 +81,21 @@ exports.updateSong = asyncErrorHandler(async (req, res) => {
 
 exports.deleteSong = asyncErrorHandler(async (req, res) => {
     const { id } = req.params;
+    console.log(id)
     const error = []
     try {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             error.push('Invalid Song ID')
             return res.status(400).json({ success: false, errors: error });
         }
-        const song = await Song.findOneAndDelete(id);
+        const song = await Song.findByIdAndDelete(id);
         if (!song) {
             error.push('Song not found')
             return res.status(404).json({ success: false, errors: error });
         }
         res.status(200).json({ success: true, message: "Song  deleted successfully", song: song })
     } catch (err) {
+        console.log(err)
         error.push("Internal Server Error")
         res.status(500).json({ success: false, errors: error });
     }
@@ -110,7 +132,7 @@ exports.getSongsCountByGenre = asyncErrorHandler(async (req, res) => {
         const genreCounts = await Song.aggregate([
             { $group: { _id: "$genre", count: { $sum: 1 } } },
             { $sort: { count: -1 } },
-            { $limit: 4}
+            { $limit: 4 }
         ]);
         res.status(200).json({ success: true, data: genreCounts });
     } catch (err) {
