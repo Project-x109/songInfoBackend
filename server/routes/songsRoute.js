@@ -1,5 +1,5 @@
 const express = require('express');
-const { addNewSong, getAllSongs, updateSong, deleteSong, getStatistics, getSongsCountByGenre, getAllSongsByFilter, getMostPopularArtist } = require('../controllers/songsController')
+const { addNewSong, getAllSongs, updateSong, deleteSong, getStatistics, addNewBatchSongs, getSongsCountByGenre, getAllSongsByFilter, getMostPopularArtist } = require('../controllers/songsController')
 const router = express.Router()
 const { validateCreateSong, handleValidationErrors } = require("../middlewares/validation")
 router.route('/songs').post(validateCreateSong, handleValidationErrors, addNewSong)
